@@ -38,9 +38,8 @@ const ContainerData2 = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
-  margin: 0px auto;
-  width: 70%;
+  width: 50%;
+  margin-top: -12px;
 `
 
 const TitleForm = styled.h1`
@@ -68,8 +67,32 @@ const Input = styled(InputMask)`
   font-size: 16px;
 `
 
+const TitleFormData = styled(TitleForm)`
+  text-align: inherit;
+`
+
 const InputData = styled(Input)`
   width: 200px;
+`
+
+const BtnSubmit = styled.button`
+  margin: 16px auto;
+  width: 150px;
+  height: 50px;
+  font-size: 22px;
+  font-family: 'Montserrat';
+  font-weight: 700;
+  background-color: #000;
+  color: #f0fff0;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.4s;
+  
+  &:hover{
+    box-shadow: 5px 5px 10px #000;
+    transform: scale(1.1);
+  }
 `
 
 const Form:React.FC = () => {
@@ -116,12 +139,13 @@ const Form:React.FC = () => {
           </LabelInput>
         </ContainerData1>
         <ContainerData2>
-          <TitleForm>Dados do Empréstimo</TitleForm>
+          <TitleFormData>Dados do Empréstimo</TitleFormData>
           <LabelInput>
             <SpanLabel>Data</SpanLabel>
             <InputData mask="99/99/9999" placeholder="Ex: 21/05/2004"/>
           </LabelInput>
         </ContainerData2>
+        <BtnSubmit>Enviar</BtnSubmit>
       </ContainerGeneralForm>
     </Container>
   )
