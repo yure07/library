@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { InputMask } from 'primereact/inputmask';
+import { ChangeEvent, FormEvent, useState } from "react";
+import axios from "axios";
         
 const Container = styled.section`
   display: flex;
@@ -16,7 +17,7 @@ const TitleSlogan = styled.h1`
   font-size: 24px;
 `
 
-const ContainerGeneralForm = styled.section`
+const ContainerGeneralForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -58,7 +59,7 @@ const SpanLabel = styled.span`
   margin-left: 6px;
 `
 
-const Input = styled(InputMask)`
+const Input = styled.input`
   width: 94%;
   height: 35px;
   border-radius: 8px;
@@ -95,63 +96,193 @@ const BtnSubmit = styled.button`
   }
 `
 
+interface PersonType {
+  nome: string;
+  cpf: string;
+  email: string;
+  telefone: string;
+}
+
+interface BookType {
+  titulo: string;
+  autor: string;
+  editora: string;
+  anoPublicacao: string;
+  dataEmprestimo: string;
+}
+
+interface valuesRefType {
+  pessoa: PersonType[];
+  livro: BookType[];
+}
+
 const Form:React.FC = () => {
+  const [valuesPerson, setValuesPerson] = useState<PersonType>({
+    nome: '',
+    cpf: '',
+    email: '',
+    telefone: ''
+  })
+
+  const [valuesBook, setValuesBook] = useState<BookType>({
+    titulo: '',
+    autor: '',
+    editora: '',
+    anoPublicacao: '',
+    dataEmprestimo: ''
+  })
+
+  const handleChangePerson = (e: ChangeEvent<HTMLInputElement>) => {
+    setValuesPerson({
+      ...valuesPerson,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleChangeBook = (e: ChangeEvent<HTMLInputElement>) => {
+    setValuesBook({
+      ...valuesBook,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+        await axios.post('https://apigenerator.dronahq.com/api/ef8I4ukd/librarySystem', {
+          pessoa:[
+            {
+              nome: valuesPerson.nome,
+              cpf: valuesPerson.cpf,
+              email: valuesPerson.email,
+              telefone: valuesPerson.telefone
+            }
+          ],
+          livro:[
+            {
+              titulo: valuesBook.titulo,
+              autor: valuesBook.autor,
+              editora: valuesBook.editora,
+              anoPublicacao: valuesBook.anoPublicacao,
+              dataEmprestimo: valuesBook.dataEmprestimo
+            }
+          ]
+        })
+        setValuesPerson({
+          nome: '',
+          cpf: '',
+          email: '',
+          telefone: ''
+        })
+        setValuesBook({
+          titulo: '',
+          autor: '',
+          editora: '',
+          anoPublicacao: '',
+          dataEmprestimo: ''
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return(
     <Container>
       <TitleSlogan>Leve para casa o livro que mais combina com você!</TitleSlogan>
-      <ContainerGeneralForm>
+      <ContainerGeneralForm onSubmit={handleSubmit}>
         <ContainerData1>
           <TitleForm>Seus dados</TitleForm>
           <LabelInput>
             <SpanLabel>Nome</SpanLabel>
-            <Input/>
+            <Input
+              name='nome'
+              value={valuesPerson.nome}
+              placeholder="Seu nome"
+              onChange={handleChangePerson} 
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>CPF</SpanLabel>
-            <Input mask="999.999.999-99" placeholder="999.999.999-99"/>
+            <Input 
+              name="cpf"
+              value={valuesPerson.cpf}
+              placeholder="999.999.999-99" 
+              onChange={handleChangePerson}
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>Email</SpanLabel>
-            <Input placeholder="Ex: email@example.com"/>
+            <Input 
+              name="email"
+              placeholder="Ex: email@example.com" 
+              onChange={handleChangePerson}
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>Telefone</SpanLabel>
-            <Input mask="(99) 99999-9999" placeholder="(99) 99999-9999"/>
+            <Input 
+              name="telefone"
+              value={valuesPerson.telefone}
+              placeholder="(99) 99999-9999" 
+              onChange={handleChangePerson}
+            />
           </LabelInput>
         </ContainerData1>
         <ContainerData1>
         <TitleForm>Dados do livro</TitleForm>
           <LabelInput>
             <SpanLabel>Título</SpanLabel>
-            <Input placeholder="Ex: Ultra-Aprendizado"/>
+            <Input 
+              name="titulo"
+              value={valuesBook.titulo}
+              placeholder="Ex: Ultra-Aprendizado" 
+              onChange={handleChangeBook}
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>Autor</SpanLabel>
-            <Input placeholder="Ex: Scott H. Young"/>
+            <Input 
+              name="autor"
+              value={valuesBook.autor}
+              placeholder="Ex: Scott H. Young" 
+              onChange={handleChangeBook}
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>Editora</SpanLabel>
-            <Input placeholder="Ex: Harper Business"/>
+            <Input 
+              name="editora"
+              value={valuesBook.editora}
+              placeholder="Ex: Harper Business" 
+              onChange={handleChangeBook}
+            />
           </LabelInput>
           <LabelInput>
             <SpanLabel>Ano de publicação</SpanLabel>
-            <Input mask="9999" placeholder="Ex: 2004"/>
+            <Input 
+              name="anoPublicacao"
+              value={valuesBook.anoPublicacao}
+              placeholder="Ex: 2004" 
+              onChange={handleChangeBook}
+            />
           </LabelInput>
         </ContainerData1>
         <ContainerData2>
           <TitleFormData>Dados do Empréstimo</TitleFormData>
           <LabelInput>
             <SpanLabel>Data</SpanLabel>
-            <InputData mask="99/99/9999" placeholder="Ex: 21/05/2004"/>
+            <InputData 
+              name='dataEmprestimo'
+              value={valuesBook.dataEmprestimo}
+              placeholder="Ex: 21/05/2021" 
+              onChange={handleChangeBook}
+            />
           </LabelInput>
         </ContainerData2>
-        <BtnSubmit>Enviar</BtnSubmit>
+        <BtnSubmit type="submit">Enviar</BtnSubmit>
       </ContainerGeneralForm>
     </Container>
   )
 }
-export default Form
 
-// pessoa: nome, cpf, email, telefone
-// livro: titulo, autor, editora, ano de publicacao
-// emprestimo: data e hora podendo ser string em forma de data (da para usar o InputMask)
+export default Form
