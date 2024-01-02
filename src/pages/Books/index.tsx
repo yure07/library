@@ -1,73 +1,73 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
+import { ChangeEvent, useState } from "react"
 import styled from "styled-components"
+import AllBooks from "../../components/AllBooks"
+import SearchByCpf from "../../components/SearchByCpf"
+import SearchByDate from "../../components/SearchByDateLoan"
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
   width: 100vw;
   height: 100vh;
   background-color: #f0fff0;
+  `
+
+const ContainerHeader = styled.header`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 1100px;
+  height: 50px;
+  margin: 48px 0;
+  `
+
+const TitleMain = styled.h1`
+  width: 63%;
+  text-align: end;
+  font-size: 40px;
+  letter-spacing: .1rem;
+  font-family: 'Montserrat';
 `
-interface dataType{
-  map?: any
-}
+const SearchByCpfInput = styled.input`
+  width: 180px;
+  height: 35px;
+  padding: 0 8px;
+  border: 1px solid #d3d3d3;
+  border-radius: 12px;
+  font-family: 'Montserrat';
+  font-weight: 700;
+`
 
-interface PessoaType {
-  nome: string;
-  cpf: string;
-  email: string;
-  telefone: string;
-}
-
-interface LivroType {
-  titulo: string;
-  autor: string;
-  editora: string;
-  anoPublicacao: string;
-  dataEmprestimo: string;
-}
-
-interface DataItem {
-  pessoa: PessoaType[];
-  livro: LivroType[];
-  id: number;
-}
+const ContainerList = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 1100px;
+`
 
 const Books:React.FC = () => {
-  const [data, setData] = useState<dataType>({})
+  const [searchCpf, setSearchCpf] = useState<string>('')
+  const [searchDateLoan, setSearchDateLoan] = useState<string>('')
 
-  useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const response = await axios.get('https://apigenerator.dronahq.com/api/ef8I4ukd/librarySystem')
-        setData(response.data)
-        console.log(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchApi()
-  },[])
+  const showAllBooks = searchCpf === '' || searchDateLoan === '' && <AllBooks/>
+  const showBooksByCpf = <SearchByCpf value={searchCpf}/>
+  const showBooksByDateLoan = <SearchByDate date={searchDateLoan}/>
 
   return(
     <Container>
-      {data && 
-        Object.values(data).map((info: DataItem) => (
-        <div key={info.id}>
-            <p>{info.id}</p>
-            <p>Pessoa:</p>
-            {info.pessoa.map((pessoa: PessoaType, index: number) => (
-              <p key={index}>{`${pessoa.nome} - ${pessoa.email}`}</p>
-            ))}
-            <p>Livro:</p>
-            {info.livro.map((livro: LivroType, index: number) => (
-              <p key={index}>{`${livro.titulo} - ${livro.autor}`}</p>
-            ))}
-        </div>
-      ))}
+      <ContainerHeader>
+        <TitleMain>Empréstimos</TitleMain>
+        <SearchByCpfInput
+          placeholder="Buscar por CPF" 
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchCpf(e.target.value)}/>
+      </ContainerHeader>
+      <ContainerList>
+      {showAllBooks}
+      {showBooksByCpf}
+      </ContainerList>
     </Container>
   )
 }

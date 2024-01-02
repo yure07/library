@@ -111,11 +111,6 @@ interface BookType {
   dataEmprestimo: string;
 }
 
-interface valuesRefType {
-  pessoa: PersonType[];
-  livro: BookType[];
-}
-
 const Form:React.FC = () => {
   const [valuesPerson, setValuesPerson] = useState<PersonType>({
     nome: '',
