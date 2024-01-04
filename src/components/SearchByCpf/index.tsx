@@ -42,7 +42,6 @@ interface DataItem {
   id: number;
 }
 
-
 const SearchByCpf:React.FC<ValueType> = ({value}) => {
   const [data, setData] = useState<Record<string, DataItem>>({})
 

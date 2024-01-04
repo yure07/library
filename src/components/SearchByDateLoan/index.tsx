@@ -59,14 +59,9 @@ const SearchByDate:React.FC<dateType> = ({ date }) => {
 
   const ListBooksByDate = data.map ? Object.values(data).flatMap((info: DataItem) => (
     info.livro.map((livro: LivroType, index: number) => {
-      if (livro.dataEmprestimo.includes(date)) {
+      if (livro.dataEmprestimo === date) {
         return(
           <ContainerItem key={info.id}>
-            <div key={index}>
-              <p>Livro: {livro.titulo}</p>
-              <p>Autor: {livro.autor}</p>
-              <p>Data de Empréstimo: {livro.dataEmprestimo}</p>
-            </div>
             {info.pessoa.map((pessoa: PessoaType, indexB: number) => (
               <div key={indexB}>
                 <p>Pessoa: {pessoa.nome}</p>
@@ -74,6 +69,11 @@ const SearchByDate:React.FC<dateType> = ({ date }) => {
                 <p>CPF: {pessoa.cpf}</p>
               </div>
             ))}
+            <div key={index}>
+              <p>Livro: {livro.titulo}</p>
+              <p>Autor: {livro.autor}</p>
+              <p>Data de Empréstimo: {livro.dataEmprestimo}</p>
+            </div>
           </ContainerItem>
         );
       }
