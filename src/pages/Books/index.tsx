@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent, useState } from "react"
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react"
 import { InputMask, InputMaskChangeEvent } from 'primereact/inputmask'
 import styled from "styled-components"
 import AllBooks from "../../components/AllBooks"
@@ -33,6 +33,8 @@ const TitleMain = styled.h1`
 const ContainerSearches = styled.div`
   display: flex;
   flex-direction: row;
+  margin-top: 24px;
+  margin-bottom: -24px;
   column-gap: 25px;
 `
 
@@ -52,7 +54,7 @@ const SearchByCpfInput = styled.input`
   font-weight: 700;
 `
 
-const SearchByDateLoan = styled(InputMask)`
+const SearchByDateInput = styled(InputMask)`
   width: 200px;
   height: 35px;
   padding: 0 8px;
@@ -61,7 +63,7 @@ const SearchByDateLoan = styled(InputMask)`
   font-family: 'Montserrat';
   font-weight: 700;
 `
-const BtnSumitDateLoan = styled.button`
+const BtnSubmitDate = styled.button`
   background-color: #008cff;
   padding: 8px;
   font-family: 'Montserrat';
@@ -84,9 +86,9 @@ const Books:React.FC = () => {
   const [searchDateLoan, setSearchDateLoan] = useState<string>('')
   const [valueOption, setValueOption] = useState<string>('')
   
-  const showAllBooks = (SearchByCpf.length < 0 && SearchByDate.length < 0) ? <AllBooks/> : <></>
-  const showBooksByCpf = <SearchByCpf value={searchCpf}/> 
-  const showBooksByDateLoan = <SearchByDate date={searchDateLoan}/>
+  const showAllBooks = searchCpf === '' && searchDateLoan === '' ? <AllBooks/> : null
+  const showBooksByCpf = searchCpf !== '' && <SearchByCpf value={searchCpf}/>
+  const showBooksByDateLoan = searchDateLoan !== '' && <SearchByDate date={searchDateLoan}/>
   
   let dateLoanCurrent:string = ''
   return(
@@ -102,6 +104,7 @@ const Books:React.FC = () => {
             <option></option>
             <option value='CPF'>CPF</option>
             <option value='data-de-emprestimo'>Data de empréstimo</option>
+            
           </SelectSearch>
           {valueOption === 'CPF' && <SearchByCpfInput
             placeholder="Ex: 999.999.999-99" 
@@ -109,18 +112,19 @@ const Books:React.FC = () => {
           }
           {valueOption === 'data-de-emprestimo' && (
             <>
-              <SearchByDateLoan
+              <SearchByDateInput
                 placeholder="Ex: 10/09/2017"
                 mask="99/99/9999"
                 onChange={(e: InputMaskChangeEvent) => dateLoanCurrent = e.target.value as string}/>
-              <BtnSumitDateLoan onClick={(e: MouseEvent<HTMLButtonElement>) => setSearchDateLoan(dateLoanCurrent)}>Buscar</BtnSumitDateLoan>
+              <BtnSubmitDate onClick={(e: MouseEvent<HTMLButtonElement>) => setSearchDateLoan(dateLoanCurrent)}>Buscar</BtnSubmitDate>
             </>
             )
           }
+          
         </ContainerSearches>
       </ContainerHeader>
       <ContainerList>
-        {valueOption === '' && showAllBooks}
+        {showAllBooks}
         {showBooksByCpf}
         {showBooksByDateLoan}
       </ContainerList>

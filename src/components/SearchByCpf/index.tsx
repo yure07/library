@@ -60,7 +60,7 @@ const SearchByCpf:React.FC<ValueType> = ({value}) => {
   const searchResults = data.map ? Object.values(data).flatMap((info: DataItem) => (
     info.pessoa.map((pessoa: PessoaType, index: number) => {
       if (pessoa.cpf.includes(value)) {
-        return(
+        return (
           <ContainerItem key={info.id}>
             <div key={index}>
               <p>Pessoa: {pessoa.nome}</p>
@@ -76,13 +76,13 @@ const SearchByCpf:React.FC<ValueType> = ({value}) => {
             ))}
           </ContainerItem>
         );
-      }
+      } else return null
     })
   )) : (
     <TitleLoading>Buscando dados...</TitleLoading>
   );
 
-  return <>{searchResults}</>;
+  return <>{searchResults}</>
 };
 
 export default SearchByCpf;

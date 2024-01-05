@@ -12,7 +12,7 @@ const ContainerItem = styled.article`
 `
 
 const DividerItem = styled.hr`
-  height: 140px;
+  height: 160px;
   position: absolute;
   border: 1px solid #d3d3d3;
   align-self: flex-end;
@@ -75,6 +75,7 @@ const AllBooks:React.FC = () => {
           <p>Livro: {livro.titulo}</p>
           <p>Autor: {livro.autor}</p>
           <p>Data de Empréstimo: {livro.dataEmprestimo}</p>
+          <p>Ano de Publicação: {livro.anoPublicacao}</p>
         </div>
       ))}
       <DividerItem/>
