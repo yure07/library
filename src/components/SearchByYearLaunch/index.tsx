@@ -1,6 +1,6 @@
 import axios from "axios";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
 
 const ContainerItem = styled.article`
   display: flex;
@@ -16,10 +16,6 @@ const TitleLoading = styled.p`
   font-size: 22px;
   margin: 16px auto;
 `
-
-interface ValueType{
-  value: string
-}
 
 interface PessoaType {
   nome: string;
@@ -42,7 +38,11 @@ interface DataItem {
   id: number;
 }
 
-const SearchByCpf:React.FC<ValueType> = ({value}) => {
+interface YearsType{
+  years: number[];
+}
+
+const SearchByYearLaunch:React.FC<YearsType> = ({years}) => {
   const [data, setData] = useState<Record<string, DataItem>>({})
 
   useEffect(() => {
@@ -56,34 +56,37 @@ const SearchByCpf:React.FC<ValueType> = ({value}) => {
     }
     fetchApi()
   },[])
-  
+
   const searchResults = data.map ? Object.values(data).flatMap((info: DataItem) => (
-    info.pessoa.map((pessoa: PessoaType, index: number) => {
-      if (pessoa.cpf.includes(value)) {
+    info.livro.map((livro: LivroType, index: number) => {
+      if (
+        parseInt(livro.anoPublicacao) >= years[0] 
+          &&  
+        parseInt(livro.anoPublicacao) <= years[1]) {
         return (
-          <ContainerItem key={info.id}>
-            <div key={index}>
-              <p>Pessoa: {pessoa.nome}</p>
-              <p>Email: {pessoa.email}</p>
-              <p>CPF: {pessoa.cpf}</p>
-            </div>
-            {info.livro.map((livro: LivroType, indexB: number) => (
+          <ContainerItem key={index}>
+            {info.pessoa.map((pessoa: PessoaType, indexB: number) => (
               <div key={indexB}>
-                <p>Livro: {livro.titulo}</p>
-                <p>Autor: {livro.autor}</p>
-                <p>Data de Empréstimo: {livro.dataEmprestimo}</p>
-                <p>Ano de Publicação: {livro.anoPublicacao}</p>
+                <p>Pessoa: {pessoa.nome}</p>
+                <p>Email: {pessoa.email}</p>
+                <p>CPF: {pessoa.cpf}</p>
               </div>
             ))}
+            <div key={index}>
+              <p>Livro: {livro.titulo}</p>
+              <p>Autor: {livro.autor}</p>
+              <p>Data de Empréstimo: {livro.dataEmprestimo}</p>
+              <p>Ano de Publicação: {livro.anoPublicacao}</p>
+            </div>
           </ContainerItem>
         );
-      } else return null
+      } else return null;
     })
   )) : (
     <TitleLoading>Buscando dados...</TitleLoading>
   );
 
   return <>{searchResults}</>
-};
+}
 
-export default SearchByCpf;
+export default SearchByYearLaunch

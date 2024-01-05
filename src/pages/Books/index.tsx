@@ -4,15 +4,17 @@ import styled from "styled-components"
 import AllBooks from "../../components/AllBooks"
 import SearchByCpf from "../../components/SearchByCpf"
 import SearchByDate from "../../components/SearchByDateLoan"
+import SearchByYearLaunch from "../../components/SearchByYearLaunch"
 
 const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f0fff0;
-  `
+  font-family: 'Montserrat';
+`
 
 const ContainerHeader = styled.header`
   display: flex;
@@ -21,20 +23,18 @@ const ContainerHeader = styled.header`
   width: 1100px;
   height: 150px;
   margin: 48px 0;
+  margin-bottom: 0;
 `
 
 const TitleMain = styled.h1`
   text-align: center;
   font-size: 40px;
   letter-spacing: .1rem;
-  font-family: 'Montserrat';
 `
 
 const ContainerSearches = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 24px;
-  margin-bottom: -24px;
   column-gap: 25px;
 `
 
@@ -73,24 +73,41 @@ const BtnSubmitDate = styled.button`
   cursor: pointer;
 `
 
+const ContainerSeacrhByYear = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 16px;
+`
+
+const TextSearchByYear = styled.p`
+  font-weight: 700;
+`
+
 const ContainerList = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   width: 1100px;
+  margin: 20px 0;
 `
 
 const Books:React.FC = () => {
   const [searchCpf, setSearchCpf] = useState<string>('')
   const [searchDateLoan, setSearchDateLoan] = useState<string>('')
+  const [years, setYears] = useState<number[]>([])
   const [valueOption, setValueOption] = useState<string>('')
   
-  const showAllBooks = searchCpf === '' && searchDateLoan === '' ? <AllBooks/> : null
+  const showAllBooks = searchCpf === '' && searchDateLoan === '' && years.length === 0 ? <AllBooks/> : null
   const showBooksByCpf = searchCpf !== '' && <SearchByCpf value={searchCpf}/>
   const showBooksByDateLoan = searchDateLoan !== '' && <SearchByDate date={searchDateLoan}/>
+  const showBooksByYear = years.length !== 0 && <SearchByYearLaunch years={years}/>
   
   let dateLoanCurrent:string = ''
+
+  let year1SearchByYear:string = ''
+  let year2SearchByYear:string = ''
   return(
     <Container>
       <ContainerHeader>
@@ -101,10 +118,9 @@ const Books:React.FC = () => {
             value={valueOption} 
             onChange={(e: ChangeEvent<HTMLSelectElement>) => setValueOption(e.target.value)}>
             <option value='' disabled hidden>Buscar por...</option>
-            <option></option>
             <option value='CPF'>CPF</option>
             <option value='data-de-emprestimo'>Data de empréstimo</option>
-            
+            <option value='entre-anos-de-publi'>Anos de publicação</option>
           </SelectSearch>
           {valueOption === 'CPF' && <SearchByCpfInput
             placeholder="Ex: 999.999.999-99" 
@@ -116,17 +132,37 @@ const Books:React.FC = () => {
                 placeholder="Ex: 10/09/2017"
                 mask="99/99/9999"
                 onChange={(e: InputMaskChangeEvent) => dateLoanCurrent = e.target.value as string}/>
-              <BtnSubmitDate onClick={(e: MouseEvent<HTMLButtonElement>) => setSearchDateLoan(dateLoanCurrent)}>Buscar</BtnSubmitDate>
+              <BtnSubmitDate onClick={() => setSearchDateLoan(dateLoanCurrent)}>Buscar</BtnSubmitDate>
             </>
             )
           }
-          
+          {valueOption === 'entre-anos-de-publi' && (
+            <ContainerSeacrhByYear>
+              <SearchByDateInput 
+                placeholder="Ex: 2020"
+                mask="9999"
+                onChange={(e: InputMaskChangeEvent) => year1SearchByYear = e.target.value as string}
+              />
+              <TextSearchByYear>Até</TextSearchByYear>
+              <SearchByDateInput 
+                placeholder="Ex: 2022"
+                mask="9999"
+                onChange={(e: InputMaskChangeEvent) => year2SearchByYear = e.target.value as string}
+              />
+              <BtnSubmitDate 
+                onClick={() => setYears([parseInt(year1SearchByYear), parseInt(year2SearchByYear)])}
+              >
+                Buscar
+              </BtnSubmitDate>
+            </ContainerSeacrhByYear>
+          )}
         </ContainerSearches>
       </ContainerHeader>
       <ContainerList>
         {showAllBooks}
         {showBooksByCpf}
         {showBooksByDateLoan}
+        {showBooksByYear}
       </ContainerList>
     </Container>
   )
