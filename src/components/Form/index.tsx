@@ -7,6 +7,17 @@ const Container = styled.section`
   flex-direction: column;
   width: 60%;
   height: 100%;
+
+  @media (max-width: 992px){
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 768px){
+    flex-direction: column;
+  }
 `
 
 const TitleSlogan = styled.h1`
@@ -21,10 +32,26 @@ const ContainerGeneralForm = styled.form`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin: 0 auto;
   flex-wrap: wrap;
-  width: 100%;
+  width: 90%;
   height: 100%;
   font-family: 'Montserrat';
+
+  @media (max-width: 992px){
+    width: 56%;
+    align-items: center;
+  }
+
+  @media (max-width: 768px){
+    width: 100%;
+  }
+
+  @media (max-width: 600px){
+    flex-direction: column;
+    row-gap: 16px;
+    margin-top: 16px;
+  }
 `
 
 const ContainerData1 = styled.div`
@@ -33,6 +60,17 @@ const ContainerData1 = styled.div`
   justify-content: space-between;
   width: 45%;
   height: 70%;
+
+  @media (max-width: 992px){
+    justify-content: initial;
+    row-gap: 16px;
+    height: 320px;
+  }
+
+  @media (max-width: 600px){
+    width: 100%;
+    row-gap: 12px;
+  }
 `
 
 const ContainerData2 = styled.div`
@@ -41,6 +79,12 @@ const ContainerData2 = styled.div`
   justify-content: space-evenly;
   width: 50%;
   margin-top: -12px;
+
+  @media (max-width: 992px){
+    width: 100%;
+    align-items: center;
+    row-gap: 16px;
+  }
 `
 
 const TitleForm = styled.h1`
