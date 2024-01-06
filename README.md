@@ -30,9 +30,9 @@ It is a project to improve skills not just in Typescript, but also to improve my
 
 Envisiousing performance and clean code.
 
-In the project the user can, register books that is loaned to a person, that also have need fill all the `<input/>`, that will to an fake API, reared in website [Drona HQ](https://apigenerator.dronahq.com/)
+In the project the user can, register books that is loaned to a person, that also have need fill all the `<input/>`, that will to an Mock API, reared in website [Drona HQ](https://apigenerator.dronahq.com/)
 
-Also see the products list of the fake API in route `/books`.
+Also see the products list of the Mock API in route `/books`.
 
 The user can filter the list of books, by someone's cpf, by a date specific of the loan and by year launcher book's.
 
