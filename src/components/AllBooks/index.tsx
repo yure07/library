@@ -6,7 +6,7 @@ const ContainerItem = styled.article`
   display: flex;
   flex-direction: column;
   line-height: 150%;
-  width: 320px;
+  width: 300px;
   font-family: 'Montserrat';
   margin: 16px 0;
 `
@@ -16,7 +16,12 @@ const DividerItem = styled.hr`
   position: absolute;
   border: 1px solid #d3d3d3;
   align-self: flex-end;
+
+  @media (max-width: 600px){
+    display: none;
+  }
 `
+
 const TitleLoading = styled.p`
   font-family: 'Montserrat';
   font-size: 22px;

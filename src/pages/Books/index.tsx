@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 import { InputMask, InputMaskChangeEvent } from 'primereact/inputmask'
 import styled from "styled-components"
 import AllBooks from "../../components/AllBooks"
@@ -20,10 +20,15 @@ const ContainerHeader = styled.header`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 1100px;
+  width: 992px;
   height: 150px;
   margin: 48px 0;
   margin-bottom: 0;
+
+  @media (max-width: 992px){
+    width: 90%;
+    height: 200px;
+  }
 `
 
 const TitleMain = styled.h1`
@@ -36,6 +41,11 @@ const ContainerSearches = styled.div`
   display: flex;
   flex-direction: row;
   column-gap: 25px;
+
+  @media (max-width: 600px){
+    flex-direction: column;
+    row-gap: 16px;
+  }
 `
 
 const SelectSearch = styled.select`
@@ -63,6 +73,7 @@ const SearchByDateInput = styled(InputMask)`
   font-family: 'Montserrat';
   font-weight: 700;
 `
+
 const BtnSubmitDate = styled.button`
   background-color: #008cff;
   padding: 8px;
@@ -78,10 +89,28 @@ const ContainerSeacrhByYear = styled.div`
   flex-direction: row;
   align-items: center;
   column-gap: 16px;
+
+  @media (max-width: 600px){
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 16px;
+  }
+`
+
+const SearchByYearInput = styled(SearchByDateInput)`
+  @media (max-width: 600px){
+    width: 130px;
+  }
 `
 
 const TextSearchByYear = styled.p`
   font-weight: 700;
+`
+
+const BtnSubmitYear = styled(BtnSubmitDate)`
+  @media (max-width: 600px){
+    width: 100%;
+  }
 `
 
 const ContainerList = styled.section`
@@ -89,8 +118,13 @@ const ContainerList = styled.section`
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 1100px;
+  width: 992px;
   margin: 20px 0;
+
+  @media (max-width: 992px){
+    width: 90%;
+    justify-content: space-evenly;
+  }
 `
 
 const Books:React.FC = () => {
@@ -138,22 +172,22 @@ const Books:React.FC = () => {
           }
           {valueOption === 'entre-anos-de-publi' && (
             <ContainerSeacrhByYear>
-              <SearchByDateInput 
+              <SearchByYearInput 
                 placeholder="Ex: 2020"
                 mask="9999"
                 onChange={(e: InputMaskChangeEvent) => year1SearchByYear = e.target.value as string}
               />
               <TextSearchByYear>Até</TextSearchByYear>
-              <SearchByDateInput 
+              <SearchByYearInput 
                 placeholder="Ex: 2022"
                 mask="9999"
                 onChange={(e: InputMaskChangeEvent) => year2SearchByYear = e.target.value as string}
               />
-              <BtnSubmitDate 
+              <BtnSubmitYear 
                 onClick={() => setYears([parseInt(year1SearchByYear), parseInt(year2SearchByYear)])}
               >
                 Buscar
-              </BtnSubmitDate>
+              </BtnSubmitYear>
             </ContainerSeacrhByYear>
           )}
         </ContainerSearches>

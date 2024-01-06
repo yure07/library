@@ -11,6 +11,17 @@ const ContainerItem = styled.article`
   margin: 16px 0;
 `
 
+const DividerItem = styled.hr`
+  height: 160px;
+  position: absolute;
+  border: 1px solid #d3d3d3;
+  align-self: flex-end;
+
+  @media (max-width: 600px){
+    display: none;
+  }
+`
+
 const TitleLoading = styled.p`
   font-family: 'Montserrat';
   font-size: 22px;
@@ -75,6 +86,7 @@ const SearchByCpf:React.FC<ValueType> = ({value}) => {
                 <p>Ano de Publicação: {livro.anoPublicacao}</p>
               </div>
             ))}
+            <DividerItem/>
           </ContainerItem>
         );
       } else return null
